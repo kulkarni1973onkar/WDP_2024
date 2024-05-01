@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Here</title>
+    <link rel="stylesheet" href="CSS/registration.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" href="images/sunset.jpg">
+    <script src="./JS/register.js   "></script>    
+</head>
+<body>
+    <header class="container">
+        <h1> BookBuzz<h1>
+        <nav class="Nav">
+            <a href="login.html">Login</a>
+            <a href="post.html">Buy</a>
+        </nav>
+    </header>
+    
+    <div class="container1">
+        <h1>Create your account</h1>
+           <form id="register" onsubmit="RegisterForm(event)">
+            <div>
+                
+                <div class="input-box-1">
+                <label for="fname">First Name</label>
+                <i class='bx bxs-user-detail' ></i>
+                <input type="text" id="fname" class="form2" name="fname" placeholder="Enter Your First Name"><br>
+                </div>
+                
+                <div class="input-box-1">
+                <label for="lastname">Last Name</label>
+                <i class='bx bxs-user-detail' ></i>
+                <input type="text" id="lname" class="form2" name="lname" placeholder="Enter Your Last Name"><br>
+                </div>
+                
+                <div class="input-box-1">
+                <label for="email">Email or Mobile No</label>
+                <i class='bx bxs-phone'></i>
+                <input type="text" id="email" class="form2" name="Email" placeholder="Enter Your Email ID or Mobile No"><br>
+                </div>
+                
+                <div class="input-box-1">
+                <label for="Username"> Create Username</label>
+                <i class='bx bxs-user-detail' ></i>
+                <input type="text" id="userName" class="form2" name="username" placeholder="Enter your username"><br>
+                </div>
+                
+                <div class="input-box-1">
+                <label for="Password"> Create Password</label>
+                <i class='bx bxs-user-detail' ></i>
+                <input type="text" id="Password" class="form2" name="pass" placeholder="atleast 6 charecters"><br>
+                </div>
+               
+                <div class="input-box-1">
+                <label for="RPassword">Re-enter Password</label>
+                <i class='bx bxs-user-detail' ></i>
+                <input type="text" id="Repass" class="form2" name="Repass" placeholder="Re-enter your Password"><br>
+                </div>
+                
+                
+                <a href="./login.html"><input type="submit" class="submit1" value="submit"></a>
+    </div>
+    </div>
+        </form>
+    
+    
+</body>
+</html>
