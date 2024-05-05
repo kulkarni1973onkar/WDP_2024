@@ -3,8 +3,8 @@ const app = express()
 
 app.use(express.json()); 
 
-const userRoutes = require("./Server/Routes/login")
-const recipeRoutes = require("./Server/Routes/register")
+const loginRoutes = require("./Server/Routes/login")
+const registerRoutes = require("./Server/Routes/register")
 
 
 app.use(function(req, res, next) {
@@ -14,7 +14,8 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use('/users', userRoutes)
+app.use('/login', loginRoutes)
+app.use('/register', registerRoutes)
 
 
 const PORT = process.env.PORT || 3000
