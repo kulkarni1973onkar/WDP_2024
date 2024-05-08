@@ -14,8 +14,7 @@ async function createTable() {
 
 createTable()
 
-// CRUD functions will go here 
-//R for READ -- get all users
+
 async function getAllUsers() {
   let sql = `SELECT * FROM User;`
   return await con.query(sql)
@@ -36,14 +35,11 @@ async function emailExists(email) {
 }
 
 let user = {
-  Username: "steve007",
-  Email: "roggers@mail.com",
+  Username: "steve@123",
+  Email: "steve@mail.com",
   Password: "assemble"
 }
-// register(user)
-// login(user)
 
-// CREATE in CRUD
 async function register(user) {
   let cUser = await userExists(user.Username)
   if(cUser.length > 0) throw Error("Username Already in Use!")
@@ -57,10 +53,11 @@ async function register(user) {
   `
   await con.query(sql)
   const u = await userExists(user.Username)
+  console.log(u)
   return u[0]
 }
 
-// READ in CRUD
+
 async function login(user) {
   let currentUser = await userExists(user.Username)
   if(!currentUser[0]) throw Error("Username does not exist!")
@@ -69,7 +66,6 @@ async function login(user) {
   return currentUser[0]
 }
 
-// UPDATE in CRUD
 async function editUsername(user) {
   let sql = `
     UPDATE User SET
@@ -82,7 +78,7 @@ async function editUsername(user) {
   return updatedUser[0]
 }
 
-// DELETE in CRUD
+
 async function deleteAccount(user) {
   let sql = `
     DELETE FROM User
