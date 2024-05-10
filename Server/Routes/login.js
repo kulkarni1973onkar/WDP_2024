@@ -1,12 +1,12 @@
 const express = require("express")
-const User = require("../Models/login")
+const Customer = require("../Models/login") 
 const router = express.Router()
 
 router
-.get('/getUsers', async (req, res) => {
+.get('/getCustomers', async (req, res) => { 
   try {
-    const users = await User.getAllUsers()
-    res.send(users)
+    const customers = await Customer.getAllCustomers() 
+    res.send(customers)
   } catch(err) {
     res.status(401).send({message: err.message})
   }
@@ -14,8 +14,8 @@ router
 
 .post('/login', async (req, res) => {
   try {
-    const user = await User.login(req.body)
-    res.send({...user, Password: undefined})
+    const customer = await Customer.login(req.body) 
+    res.send({...customer, Password: undefined})
   } catch(err) {
     res.status(401).send({message: err.message})
   }
@@ -23,8 +23,8 @@ router
 
 .post('/register', async (req, res) => {
   try {
-    const user = await User.register(req.body)
-    res.send({...user, Password: undefined})
+    const customer = await Customer.register(req.body) 
+    res.send({...customer, Password: undefined})
   } catch(err) {
     res.status(401).send({message: err.message})
   }
@@ -32,8 +32,8 @@ router
 
 .put('/edit', async (req, res) => {
   try {
-    let updatedUser = await User.editUsername(req.body)
-    res.send({...updatedUser, Password: undefined})
+    let updatedCustomer = await Customer.editUsername(req.body) 
+    res.send({...updatedCustomer, Password: undefined})
   } catch(err) {
     res.status(401).send({message: err.message})
   }
@@ -41,7 +41,7 @@ router
 
 .delete('/remove', async (req, res) => {
   try {
-    await User.deleteAccount(req.body)
+    await Customer.deleteAccount(req.body) 
     res.send({success: "Have a good one >:((("})
   } catch(err) {
     res.status(401).send({message: err.message})
