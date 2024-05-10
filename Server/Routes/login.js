@@ -1,5 +1,5 @@
 const express = require("express")
-const User = require("../models/user")
+const User = require("../Models/login")
 const router = express.Router()
 
 router
@@ -36,6 +36,15 @@ router
     res.send({...updatedUser, Password: undefined})
   } catch(err) {
     res.status(401).send({message: err.message})
+  }
+})
+
+.put('/updatepassword', async (req, res) => {
+  try {
+      let updatedUser = await User.editPassword(req.body)
+      res.send(updatedUser)
+  } catch (err) {
+      res.status(401).send({ message: err.message })
   }
 })
 
