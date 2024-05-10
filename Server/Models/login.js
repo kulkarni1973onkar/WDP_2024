@@ -1,12 +1,14 @@
 const con = require("./db_connect")
 
 async function createTable() {
-  let sql = `CREATE TABLE IF NOT EXISTS User (
-    UserID INT NOT NULL AUTO_INCREMENT,
+  let sql = `CREATE TABLE IF NOT EXISTS Customer (
+    CustomerID INT NOT NULL AUTO_INCREMENT,
+    FirstName VARCHAR(255) NOT NULL,
+    LastName VARCHAR(255) NOT NULL,
     Username VARCHAR(255) NOT NULL UNIQUE,
     Email VARCHAR(255) NOT NULL UNIQUE,
     Password VARCHAR(255) NOT NULL,
-    CONSTRAINT userPK PRIMARY KEY(userID)
+    CONSTRAINT customerPK PRIMARY KEY(CustomerID)
   );`
 
   await con.query(sql);  
@@ -15,88 +17,82 @@ async function createTable() {
 createTable()
 
 
-async function getAllUsers() {
-  let sql = `SELECT * FROM User;`
+async function getAllCustomers() {
+  let sql = `SELECT * FROM Customer;`
   return await con.query(sql)
 }
 
-async function userExists(username) {
-  let sql = `SELECT * FROM User 
+async function customerExists(username) {
+  let sql = `SELECT * FROM Customer 
     WHERE Username = "${username}"
   `
   return await con.query(sql) 
 }
 
 async function emailExists(email) {
-  let sql = `SELECT * FROM User 
+  let sql = `SELECT * FROM Customer 
     WHERE Email = "${email}"
   `
   return await con.query(sql) 
 }
 
-// let user = {
-//   Username: "steve@123",
-//   Email: "steve@mail.com",
-//   Password: "assemble"
-// }
+async function register(customer) {
+  let cCustomer = await customerExists(customer.Username)
+  if(cCustomer.length > 0) throw Error("Username Already Exists!")
 
-async function register(user) {
-  let cUser = await userExists(user.Username)
-  if(cUser.length > 0) throw Error("Username Already Exists!")
-
-  let email = await emailExists(user.Email)
+  let email = await emailExists(customer.Email)
   if(email.length > 0) throw Error("Account with Email Already Exists ")
 
   let sql = `
-    INSERT INTO User(Username, Password, Email)
-    VALUES("${user.Username}", "${user.Password}", "${user.Email}")
+    INSERT INTO Customer(FirstName,LastName,Username, Password, Email)
+    VALUES("${customer.FirstName}","${customer.LastName}","${customer.Username}", "${customer.Password}", "${customer.Email}")
   `
   await con.query(sql)
-  const u = await userExists(user.Username)
+  const u = await customerExists(customer.Username)
   console.log(u)
   return u[0]
 }
 
 
-async function login(user) {
-  let currentUser = await userExists(user.Username)
-  if(!currentUser[0]) throw Error("Username does not exist!")
-  if(user.Password !== currentUser[0].Password) throw Error("Invalid Password!")
+async function login(customer) {
+  let currentCustomer = await customerExists(customer.Username)
+  if(!currentCustomer[0]) throw Error("Username does not exist!")
+  if(customer.Password !== currentCustomer[0].Password) throw Error("Invalid Password!")
 
-  return currentUser[0]
+  return currentCustomer[0]
 }
 
-async function editUsername(user) {
+async function editUsername(customer) {
   let sql = `
-    UPDATE User SET
-    Username = "${user.Username}"
-    WHERE UserID = ${user.UserID}
+    UPDATE Customer SET
+    Username = "${customer.Username}"
+    WHERE CustomerID = ${customer.CustomerID}
   `
   await con.query(sql)
 
-  let updatedUser = await userExists(user.Username)
-  return updatedUser[0]
+  let updatedCustomer = await customerExists(customer.Username)
+  return updatedCustomer[0]
 }
 
-async function editPassword(user) {
+async function editPassword(customer) {
   let sql = `
-    UPDATE UserData SET
-    Password  = "${user.Password}"
-    WHERE Username = "${user.Username}";
+    UPDATE Customer SET
+    Password  = "${customer.Password}"
+    WHERE Username = "${customer.Username}";
   `
   await con.query(sql)
 
-  let updatedUser = await userExists(user.Username)
-  return updatedUser[0]
+  let updatedCustomer = await customerExists(customer.Username)
+  return updatedCustomer[0]
 }
 
 
-async function deleteAccount(user) {
+async function deleteAccount(customer) {
   let sql = `
-    DELETE FROM User
-    WHERE UserID = ${user.UserID}
+    DELETE FROM Customer
+    WHERE CustomerID = ${customer.CustomerID}
   `
   await con.query(sql)
 }
 
-module.exports = { getAllUsers, login, register, editUsername, deleteAccount, editPassword }
+module.exports = { getAllCustomers, login, register, editUsername, deleteAccount, editPassword }
