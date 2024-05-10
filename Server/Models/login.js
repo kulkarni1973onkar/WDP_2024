@@ -34,18 +34,18 @@ async function emailExists(email) {
   return await con.query(sql) 
 }
 
-let user = {
-  Username: "steve@123",
-  Email: "steve@mail.com",
-  Password: "assemble"
-}
+// let user = {
+//   Username: "steve@123",
+//   Email: "steve@mail.com",
+//   Password: "assemble"
+// }
 
 async function register(user) {
   let cUser = await userExists(user.Username)
-  if(cUser.length > 0) throw Error("Username Already in Use!")
+  if(cUser.length > 0) throw Error("Username Already Exists!")
 
   let email = await emailExists(user.Email)
-  if(email.length > 0) throw Error("Account with Email already in use")
+  if(email.length > 0) throw Error("Account with Email Already Exists ")
 
   let sql = `
     INSERT INTO User(Username, Password, Email)
@@ -61,7 +61,7 @@ async function register(user) {
 async function login(user) {
   let currentUser = await userExists(user.Username)
   if(!currentUser[0]) throw Error("Username does not exist!")
-  if(user.Password !== currentUser[0].Password) throw Error("Password does not match!")
+  if(user.Password !== currentUser[0].Password) throw Error("Invalid Password!")
 
   return currentUser[0]
 }
@@ -78,6 +78,18 @@ async function editUsername(user) {
   return updatedUser[0]
 }
 
+async function editPassword(user) {
+  let sql = `
+    UPDATE UserData SET
+    Password  = "${user.Password}"
+    WHERE Username = "${user.Username}";
+  `
+  await con.query(sql)
+
+  let updatedUser = await userExists(user.Username)
+  return updatedUser[0]
+}
+
 
 async function deleteAccount(user) {
   let sql = `
@@ -87,4 +99,4 @@ async function deleteAccount(user) {
   await con.query(sql)
 }
 
-module.exports = { getAllUsers, login, register, editUsername, deleteAccount }
+module.exports = { getAllUsers, login, register, editUsername, deleteAccount, editPassword }
